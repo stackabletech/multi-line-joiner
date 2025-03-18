@@ -4,7 +4,7 @@ use std::io;
 fn main() {
     let mut iter = io::stdin().lines().peekable();
     while let Some(mut log_stmt) = iter.next() {
-        let v: Value = serde_json::from_str(&log_stmt.unwrap()).unwrap();
+        let mut v: Value = serde_json::from_str(&log_stmt.unwrap()).unwrap();
         let mut body = v["body"].to_string();
         //let mut log_stmt = serde_json::from_str()log_stmt.unwrap();
         while let Some(line) = iter.next_if(|stmt2| {
@@ -25,6 +25,7 @@ fn main() {
             // TODO: benchmark this against the "other" implementation to get an idea of the
             //   performance hit we take
         }
-        println!("{}", body);
+        v["body"] = Value::String(body);
+        println!("{:?}", v);
     }
 }
